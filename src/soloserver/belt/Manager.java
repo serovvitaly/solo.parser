@@ -10,6 +10,7 @@ package soloserver.belt;
  */
 public class Manager {
     
+    // максимально допустимое число BeltObject
     static Number max_belt_objects = 10;
     
     
