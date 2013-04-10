@@ -47,7 +47,11 @@ public class SoloServer {
         
         conf = loadConfig();
         
+        loadHandlers();
+        
         System.out.println(conf.handlers_dir);
+        
+        //
         
         //MongoClient mongoClient = new MongoClient("localhost");
         //DB db = mongoClient.getDB("test");
@@ -60,26 +64,52 @@ public class SoloServer {
     
     
     /**
+     * Загружает обработчики
+     */
+    protected static void loadHandlers(){
+        
+        System.out.println( ClassLoader.getSystemClassLoader().getClass().getName() );
+        
+        
+        
+        File hdir = new File(conf.handlers_dir);
+        
+        if (!hdir.isDirectory()) {
+            return;
+        }
+        
+        for (File hfile : hdir.listFiles()) {
+            System.out.println( hfile.getAbsolutePath() );
+            
+            //cloader.
+            
+        }
+        
+    }
+    
+    
+    /**
      * Загружает конфигурацию из файла указанного в свойстве config_file_name
      * @return Config
      */
     protected static Config loadConfig(){
         
-        Config conf = null;
+        Config config = null;
         
         try{
-            YamlReader reader = new YamlReader(new FileReader(config_file_name));
+            YamlReader reader;
+            reader = new YamlReader(new FileReader(config_file_name));
             
-            conf = reader.read(Config.class);
+            config = reader.read(Config.class);
             
         } catch (YamlException | FileNotFoundException e) {
             System.out.println(e.getMessage());
         }
         
-        if (conf == null) {
-            conf =  new Config();
+        if (config == null) {
+            config =  new Config();
         }
         
-        return conf;
+        return config;
     }
 }
