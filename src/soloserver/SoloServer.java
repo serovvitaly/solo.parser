@@ -25,6 +25,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 import java.net.UnknownHostException;
+import soloserver.belt.BeltObject;
 
 
 /**
@@ -47,7 +48,9 @@ public class SoloServer {
         
         conf = loadConfig();
         
-        loadHandlers();
+        //initHandlersStore();
+        
+        
         
         System.out.println(conf.handlers_dir);
         
@@ -64,13 +67,19 @@ public class SoloServer {
     
     
     /**
-     * Загружает обработчики
+     * Вызывает обработчик и передает ему объект BeltObject
+     * @param handler_name - имя класса обработчика
+     * @param bobject - BeltObject
      */
-    protected static void loadHandlers(){
-        
-        System.out.println( ClassLoader.getSystemClassLoader().getClass().getName() );
-        
-        
+    protected static void callHandler(String handler_name, BeltObject bobject){
+        //
+    }
+    
+    
+    /**
+     * Инициализирует хранилище обработчиков
+     */
+    protected static void initHandlersStore(){       
         
         File hdir = new File(conf.handlers_dir);
         

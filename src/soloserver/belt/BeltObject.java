@@ -8,6 +8,6 @@ package soloserver.belt;
  *
  * @author Vitaliy
  */
-public class Object {
+public class BeltObject {
     
 }
