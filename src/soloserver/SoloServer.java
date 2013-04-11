@@ -6,6 +6,8 @@ package soloserver;
 
 import com.esotericsoftware.yamlbeans.YamlException;
 import com.esotericsoftware.yamlbeans.YamlReader;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoException;
 import com.mongodb.WriteConcern;
@@ -23,10 +25,11 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.ObjectOutputStream;
 
 import java.net.UnknownHostException;
+import java.util.Set;
 import soloserver.belt.BeltObject;
-
 
 /**
  *
@@ -38,31 +41,56 @@ public class SoloServer {
     
     protected static Config conf;
     
+    protected static DBCollection coll_bobjects = null;
+    
     //static FileConfiguration conf = null;
     
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws UnknownHostException {
         // TODO code application logic here
         
         conf = loadConfig();
         
+        MongoClient mongoClient = new MongoClient( conf.mongodb_host );
+        DB db = mongoClient.getDB( conf.mongodb_base );
+        coll_bobjects = db.getCollection( conf.name_coll_bobjects );
+        
         //initHandlersStore();
         
+        //System.out.println(conf.handlers_dir);
         
+        BeltObject bobj = new BeltObject();
         
-        System.out.println(conf.handlers_dir);
+        bobj.name = "Иван";
+        bobj.age = 33;
+        bobj.sex = "male";
         
         //
+
+    }
+    
+    
+    /**
+     * Фиксирует BeltObject в базе данных
+     * @param bobject
+     * @param passed_handler 
+     */
+    protected static void commitBeltObject(BeltObject bobject, String passed_handler){
         
-        //MongoClient mongoClient = new MongoClient("localhost");
-        //DB db = mongoClient.getDB("test");
-        //Set<String> colls = db.getCollectionNames();
-        //DBCollection coll = db.getCollection("foobar");
-        //BasicDBObject doc = new BasicDBObject("name", "Vitaly Serov").append("email", "serovvitaly@gmail.com");
-        //coll.insert(doc);
+        BasicDBObject doc = new BasicDBObject();
+        doc.append("created", new java.util.Date().toString());
+        doc.append("passed_handler", passed_handler);
+        doc.append("BeltObject", bobject.toString());
+        coll_bobjects.insert(doc);
         
+    }
+    
+    
+    protected static BeltObject captureObject(){
+        return null;
+        //
     }
     
     

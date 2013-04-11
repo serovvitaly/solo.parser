@@ -8,6 +8,12 @@ package soloserver.belt;
  *
  * @author Vitaliy
  */
-public class BeltObject {
+public class BeltObject extends MainObject{
+    
+    public String name;
+    
+    public Integer age;
+    
+    public String sex;
     
 }
